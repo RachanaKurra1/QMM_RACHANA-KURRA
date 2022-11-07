@@ -1,0 +1,106 @@
+---
+title: "assignment"
+author: "Rachana"
+date: "2022-11-07"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+
+#The objective function 
+
+#Max\hspace{.2cm}Z = P-6C-3D 
+
+#P = total (discounted) profit over the life of the new products, 
+#C = change (in either direction) in the current level of employment, 
+#D = decrease (if any) in next year’s earnings from the current year’s level. 
+``` 
+
+```{r}
+tab= matrix(c("Total Profit","Employment Level","Earnings NextYear",
+                20,6,8,
+                15,4,7,
+                25,5,5,
+                "Maximize","=50",">=75"),ncol=5, byrow = FALSE)
+                
+colnames(tab)= c('Factor', 'P1','P2','P3','Goal')
+tab
+
+
+```
+
+#1. Defining y1d,y1u,y2d,y2u
+
+
+#Let x1,x2 and x3 be the number of products produced for P1,p2 and p3
+
+#y1u = Positive deviation  in employment level
+
+#y1d = negative deviation in employment level
+
+#y2u= Positive deviation  in goal regarding earnings next year
+
+#y2d = negative deviation  in goal regarding earnings next year
+
+
+# P = 20x1 + 15x2 +25x3
+
+
+#while maintaining employment level as 50 employees and increase in company earnings next year above 75 million dollars
+
+
+#Formulating constraints 
+
+
+#Employment level constraint   : y1u - y1d = 6x1 + 4x2 + 5x3 - 50  
+#Earnings next year constraint : y2u - y2d = 8x1 + 7x2 + 5x3 - 75 
+
+
+#Objective function 
+
+#Maximize: 20x1 + 15x2 + 25x3 - 6y1m - 6y1u - 3y2d
+
+#Constraints:
+
+#6x1 + 4x2 + 5x3 + y1d - y1u = 50
+#8x1 + 7x2 + 5x3 + y2d - y2u = 75
+
+#3.Formulating and solving the linear programming model 
+
+```{r}
+
+library(lpSolveAPI)
+index<- read.lp("C:/Users/kurra/Downloads/corporation.lp")
+index
+```
+
+# Solving
+```{r}
+solve(index)
+get.objective(index)
+get.variables(index)
+```
+#Interpretation
+
+#The profit obtained is 225 million dollars.
+
+#The constraint values are:
+
+#x1=0,x2=0,x3=15,y1d=0,y1u=25,y2d=0,y2u=0
+
+# y1u=25 indicating increase  in employment level by 25 hundred employees due to this increase the company have to pay a penality which decreases the profit,
+
+#From above, we can interpret that x1=0 and x2=0 which means increase in the number of units produced for p1 and p2 will not have any impact in profit maximization, whereas increase in the number of units produced in p3 by 15 can help to maximize the profit.
+
+
+#earnings of next year can be calculating by estimating values of y2d and y2u. Here, both the values are 0 so, which means there is no increase or decrease in the next year earnings.
+
+
+
+
+
